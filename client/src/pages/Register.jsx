@@ -1,61 +1,184 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { register } from "../utils/auth";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
       const data = await register({ name, email, password });
       localStorage.setItem("cloudscape_token", data.token);
       localStorage.setItem("cloudscape_user", JSON.stringify({ _id: data._id, name: data.name, email: data.email }));
       navigate("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || err.message);
+      setError(err.response?.data?.message || err.message || "Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Create your Cloudscape account</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          type="text"
-          placeholder="Full name"
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          placeholder="Email"
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          placeholder="Password"
-          required
-          className="w-full border p-2 rounded"
-        />
-        <button disabled={loading} className="w-full bg-blue-600 text-white p-2 rounded">
-          {loading ? "Creating account..." : "Create account"}
-        </button>
-      </form>
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-6 py-24">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-light tracking-wider mb-4">
+            Join Cloudscape
+          </h1>
+          <p className="text-gray-400 text-sm tracking-wide">
+            Create your account to access exclusive collections
+          </p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-900/20 border border-red-900 text-red-200 px-4 py-3 text-sm">
+              {error}
+            </div>
+          )}
+
+          {/* Full Name Input */}
+          <div className="space-y-2">
+            <label htmlFor="name" className="block text-xs tracking-widest uppercase text-gray-400">
+              Full Name
+            </label>
+            <input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Enter your full name"
+              required
+              disabled={loading}
+              className="w-full bg-transparent border border-gray-700 px-4 py-4 focus:border-white transition-colors duration-300 outline-none text-white placeholder-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            />
+          </div>
+
+          {/* Email Input */}
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-xs tracking-widest uppercase text-gray-400">
+              Email Address
+            </label>
+            <input
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Enter your email"
+              required
+              disabled={loading}
+              className="w-full bg-transparent border border-gray-700 px-4 py-4 focus:border-white transition-colors duration-300 outline-none text-white placeholder-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            />
+          </div>
+
+          {/* Password Input */}
+          <div className="space-y-2">
+            <label htmlFor="password" className="block text-xs tracking-widest uppercase text-gray-400">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                placeholder="Create a password"
+                required
+                disabled={loading}
+                minLength={6}
+                className="w-full bg-transparent border border-gray-700 px-4 py-4 pr-12 focus:border-white transition-colors duration-300 outline-none text-white placeholder-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                disabled={loading}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors duration-300 disabled:opacity-50"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">Must be at least 6 characters</p>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="group relative w-full bg-white text-black py-4 overflow-hidden transition-all duration-500 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 mt-8"
+          >
+            <span className="relative z-10 text-sm tracking-widest font-medium flex items-center justify-center gap-2">
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Creating Account...
+                </>
+              ) : (
+                "Create Account"
+              )}
+            </span>
+            <div className="absolute inset-0 bg-gray-900 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 group-disabled:translate-y-full"></div>
+            <span className="absolute inset-0 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-sm tracking-widest font-medium z-20 group-disabled:opacity-0">
+              Create Account
+            </span>
+          </button>
+
+          {/* Divider */}
+          <div className="relative my-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-800"></div>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-black px-4 text-gray-500 tracking-widest">
+                Already have an account?
+              </span>
+            </div>
+          </div>
+
+          {/* Sign In Link */}
+          <button
+            type="button"
+            onClick={() => navigate("/login")}
+            disabled={loading}
+            className="w-full border border-gray-700 text-white py-4 hover:bg-white hover:text-black transition-all duration-500 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-transparent disabled:hover:text-white"
+          >
+            <span className="text-sm tracking-widest font-medium">
+              Sign In
+            </span>
+          </button>
+        </form>
+
+        {/* Terms */}
+        <p className="text-center text-xs text-gray-600 mt-8 leading-relaxed">
+          By creating an account, you agree to our{" "}
+          <button
+            onClick={() => navigate("/terms")}
+            className="text-gray-400 hover:text-white transition-colors duration-300 underline"
+          >
+            Terms of Service
+          </button>{" "}
+          and{" "}
+          <button
+            onClick={() => navigate("/privacy")}
+            className="text-gray-400 hover:text-white transition-colors duration-300 underline"
+          >
+            Privacy Policy
+          </button>
+        </p>
+      </div>
     </div>
   );
 };

@@ -81,8 +81,8 @@ const NavBar = () => {
           {/* Desktop Navigation Links */}
           <div className={`hidden md:flex space-x-12 text-sm tracking-widest transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
             <button onClick={() => handleNavigation('/new')} className="hover:text-gray-300 transition-colors duration-300">NEW</button>
-            <button onClick={() => handleNavigation('/women')} className="hover:text-gray-300 transition-colors duration-300">WOMEN</button>
-            <button onClick={() => handleNavigation('/men')} className="hover:text-gray-300 transition-colors duration-300">MEN</button>
+            <button onClick={() => handleNavigation('/women')} className="hover:text-gray-300 transition-colors duration-300">EXCLUSIVE</button>
+            <button onClick={() => handleNavigation('/men')} className="hover:text-gray-300 transition-colors duration-300"></button>
             <button onClick={() => handleNavigation('/products')} className="hover:text-gray-300 transition-colors duration-300">COLLECTIONS</button>
           </div>
           
@@ -108,7 +108,7 @@ const NavBar = () => {
               
               {/* User Dropdown */}
               {userMenuOpen && (
-                <div className="absolute right-0 mt-4 w-56 bg-black border border-gray-800 shadow-2xl">
+                <div className="absolute right-0 mt-4 w-56 text-white bg-black border border-gray-800 shadow-2xl">
                   {user ? (
                     <div className="py-2">
                       <div className="px-4 py-3 border-b border-gray-800">
@@ -182,7 +182,7 @@ const NavBar = () => {
       </nav>
 
       {/* Mobile Menu */}
-      <div className={`fixed inset-0 bg-black z-40 md:hidden transition-transform duration-500 ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed inset-0 bg-black text-white z-40 md:hidden transition-transform duration-500 ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex flex-col h-full pt-24 px-6">
           {/* Mobile Navigation Links */}
           <div className="flex flex-col space-y-8 mb-12">
@@ -196,13 +196,13 @@ const NavBar = () => {
               onClick={() => handleNavigation('/women')}
               className="text-2xl font-light tracking-widest hover:text-gray-300 transition-colors duration-300 text-left"
             >
-              WOMEN
+              Exclusive
             </button>
             <button 
               onClick={() => handleNavigation('/men')}
               className="text-2xl font-light tracking-widest hover:text-gray-300 transition-colors duration-300 text-left"
             >
-              MEN
+              
             </button>
             <button 
               onClick={() => handleNavigation('/collections')}

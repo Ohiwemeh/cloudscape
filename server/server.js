@@ -6,6 +6,8 @@ import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+// 1. Import your new admin routes
+import adminRoutes from "./routes/adminroutes.js"; 
 
 dotenv.config();
 
@@ -21,6 +23,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/users", userRoutes);
+// 2. Use your new admin routes at the /api/admin path
+app.use("/api/admin", adminRoutes); 
 
 // Connect MongoDB (if not in test environment)
 if (process.env.NODE_ENV !== "test") {

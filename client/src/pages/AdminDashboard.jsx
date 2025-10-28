@@ -20,7 +20,8 @@ const AdminDashboard = () => {
         // Fetch products and user stats
         const [products, userStats] = await Promise.all([
           axios.get('http://localhost:5000/api/products', config),
-          axios.get('http://localhost:5000/api/users/stats', config)
+          // 3. This is the corrected URL
+          axios.get('http://localhost:5000/api/admin/stats', config) 
         ]);
 
         setStats({
@@ -83,7 +84,7 @@ const AdminDashboard = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="h-10 w-10 flex-shrink-0">
-                        <img className="h-10 w-10 rounded object-cover" src={product.images?.[0] || '/placeholder.jpg'} alt="" />
+                        <img className="h-10 w-10 rounded object-cover" src={product.images?.[0] || 'https://placehold.co/40x40/e2e8f0/a0aec0?text=Img'} alt={product.name} />
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">{product.name}</div>
