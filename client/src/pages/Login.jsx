@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../utils/auth";
-import { useAdminAuth } from "../context/AdminAuthContext";
+// Import our *new* unified auth hook
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,39 +9,52 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { adminLogin } = useAdminAuth();
+  
+  // Use the new context
+  const { login, user, isLoading } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    // Wait for auth to be loaded
+    if (!isLoading && user) {
+      // Check role and redirect
+      if (user.isAdmin) {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
+    }
+  }, [user, isLoading, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // Check for admin credentials first
-    if (email === 'cloudscape@admin.com' && password === 'cloudadmin123!') {
-      const success = adminLogin(email, password);
-      if (success) {
-        navigate("/admin/dashboard", { replace: true });
-        return;
-      }
-    }
-
-    // If not admin, try regular user login
+    // No more hardcoded admin checks!
+    // We just try to log in. The context and server handle everything.
     try {
-      const data = await login({ email, password });
-      localStorage.setItem("cloudscape_token", data.token);
-      localStorage.setItem("cloudscape_user", JSON.stringify({ 
-        _id: data._id, 
-        name: data.name, 
-        email: data.email,
-        isAdmin: false
-      }));
-      navigate("/dashboard");
+      // The login function now returns the user object on success
+      const loggedInUser = await login(email, password);
+
+      // Now we check the role from the user object
+      if (loggedInUser.isAdmin) {
+        navigate("/admin/dashboard", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+
     } catch (err) {
       setError(err.response?.data?.message || "Invalid credentials");
     } finally {
       setLoading(false);
     }
   };
+
+  // If user is already loaded, don't show login form
+  if (isLoading || (!isLoading && user)) {
+    return <div>Loading...</div>; // Or a spinner
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

@@ -1,14 +1,18 @@
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { useAdminAuth } from '../context/AdminAuthContext';
+// 1. Import the new useAuth hook
+import { useAuth } from '../context/AuthContext';
 
 const AdminLayout = () => {
-  const { adminLogout } = useAdminAuth();
+  // 2. Get the unified 'logout' function from our 'useAuth' hook
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    adminLogout();
-    navigate('/admin/login');
+    // 3. Call the main logout function
+    logout();
+    // 4. Navigate to the main /login page
+    navigate('/login');
   };
 
   return (

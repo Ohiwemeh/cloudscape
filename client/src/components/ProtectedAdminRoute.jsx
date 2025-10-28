@@ -1,25 +1,31 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAdminAuth } from '../context/AdminAuthContext';
+// 1. Import the new 'useAuth' hook, not 'useAdminAuth'
+import { useAuth } from '../context/AuthContext';
 
 const ProtectedAdminRoute = ({ children }) => {
-  const { isAdmin } = useAdminAuth();
+  // 2. Call 'useAuth()' to get the user and loading state
+  const { user, isLoading } = useAuth();
   const location = useLocation();
-  
-  // Check localStorage on mount as well
-  useEffect(() => {
-    const adminStatus = localStorage.getItem('isAdmin');
-    if (!adminStatus || adminStatus !== 'true') {
-      // Force redirect if not admin
-      window.location.href = '/admin/login';
-    }
-  }, []);
 
-  if (!isAdmin) {
-    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+  // 3. Show a loading state while auth is checking
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div>Loading...</div>
+      </div>
+    );
   }
 
+  // 4. Check if the user exists AND if they are an admin
+  if (!user || !user.isAdmin) {
+    // Redirect them to the main login page
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  // 5. If they are an admin, show the admin content
   return children;
 };
 
 export default ProtectedAdminRoute;
+
