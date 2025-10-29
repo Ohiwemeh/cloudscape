@@ -47,6 +47,8 @@ const NavBar = () => {
   };
 
   const handleNavigation = (path) => {
+    setMobileMenuOpen(false);
+    setUserMenuOpen(false);
     navigate(path);
     setMobileMenuOpen(false);
   };

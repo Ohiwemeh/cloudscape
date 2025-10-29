@@ -21,8 +21,7 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    // Navigate to checkout page or show checkout modal
-    alert("Checkout coming soon...");
+    navigate('/checkout');
   };
 
   return (

@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import MainLayout from "./layout/MainLayout.jsx";
 import AdminLayout from "./layout/AdminLayout.jsx";
+import Checkout from "./pages/Checkout.jsx";
+import MyOrders from "./pages/MyOrders.jsx";
 import Products from "./pages/Products.jsx";
 import Cart from "./pages/Cart.jsx";
 import Login from "./pages/Login.jsx";
@@ -33,6 +35,8 @@ export default function AppRouter() {
             <Route path="products" element={<Products />} />
             <Route path="product/:id" element={<ProductDetails />} />
             <Route path="cart" element={<Cart />} />
+            <Route path="checkout" element={<Checkout />} />
+            <Route path="orders" element={<MyOrders />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="settings" element={<Settings />} />
           </Route>
