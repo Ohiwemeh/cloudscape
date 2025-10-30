@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute.jsx";
+import { Analytics } from '@vercel/analytics/react';
 
 // Layouts
 import MainLayout from "./layout/MainLayout.jsx";
@@ -26,6 +27,7 @@ import New from "./pages/New.jsx";
 import Exclusive from "./pages/Exclusive.jsx";
 import Profile from "./pages/Profile.jsx";
 
+
 // Admin Pages
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import AdminProducts from "./pages/AdminProducts.jsx";
@@ -36,9 +38,10 @@ import AdminUsers from "./pages/AdminUsers.jsx";
 export default function AppRouter() {
   return (
     <AuthProvider>
+     
       <BrowserRouter>
         <Routes>
-
+     <Analytics />
           {/* Auth Routes */}
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
