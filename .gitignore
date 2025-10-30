@@ -1,0 +1,30 @@
+# Node
+node_modules/
+npm-debug.log*
+.yarn-integrity
+.pnpm-debug.log*
+
+# Builds
+dist/
+build/
+
+# Env files
+.env
+.env.*
+server/.env
+client/.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Others
+.vite/
