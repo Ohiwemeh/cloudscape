@@ -58,7 +58,7 @@ const Settings = () => {
       }
 
       const response = await axios.put(
-        "http://localhost:5000/api/auth/profile",
+        `${import.meta.env.VITE_API_URL}/api/auth/profile`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
