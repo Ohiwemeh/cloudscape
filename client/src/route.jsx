@@ -38,10 +38,10 @@ import AdminUsers from "./pages/AdminUsers.jsx";
 export default function AppRouter() {
   return (
     <AuthProvider>
-     
+     <Analytics />
       <BrowserRouter>
         <Routes>
-     <Analytics />
+     
           {/* Auth Routes */}
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
