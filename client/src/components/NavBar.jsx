@@ -84,7 +84,7 @@ const NavBar = () => {
           <div className={`hidden md:flex space-x-12 text-sm tracking-widest transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
             <button onClick={() => handleNavigation('/new')} className="hover:text-gray-300 transition-colors duration-300">NEW</button>
             <button onClick={() => handleNavigation('/women')} className="hover:text-gray-300 transition-colors duration-300">EXCLUSIVE</button>
-            <button onClick={() => handleNavigation('/men')} className="hover:text-gray-300 transition-colors duration-300"></button>
+            {/* <button onClick={() => handleNavigation('/men')} className="hover:text-gray-300 transition-colors duration-300"></button> */}
             <button onClick={() => handleNavigation('/products')} className="hover:text-gray-300 transition-colors duration-300">COLLECTIONS</button>
           </div>
           
@@ -200,14 +200,14 @@ const NavBar = () => {
             >
               Exclusive
             </button>
-            <button 
+            {/* <button 
               onClick={() => handleNavigation('/men')}
               className="text-2xl font-light tracking-widest hover:text-gray-300 transition-colors duration-300 text-left"
             >
               
-            </button>
+            </button> */}
             <button 
-              onClick={() => handleNavigation('/collections')}
+              onClick={() => handleNavigation('/products')}
               className="text-2xl font-light tracking-widest hover:text-gray-300 transition-colors duration-300 text-left"
             >
               COLLECTIONS
