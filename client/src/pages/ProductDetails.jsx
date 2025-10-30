@@ -20,12 +20,12 @@ const ProductDetails = () => {
       try {
         setLoading(true);
         // Fetch the main product
-        const productRes = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const productRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
         setProduct(productRes.data);
         setSelectedSize(productRes.data.sizes?.[0] || null);
 
         // Fetch related products from the same category
-        const relatedRes = await axios.get(`http://localhost:5000/api/products?category=${productRes.data.category}`);
+        const relatedRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/products?category=${productRes.data.category}`);
         // Filter out the current product and limit to 4 related products
         const filtered = relatedRes.data
           .filter(item => item._id !== id)

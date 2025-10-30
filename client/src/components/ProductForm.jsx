@@ -64,7 +64,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/upload', formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (progressEvent) => {
           const percentage = (progressEvent.loaded * 100) / progressEvent.total;
@@ -137,7 +137,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
       const publicId = url.split('/').slice(-1)[0].split('.')[0];
       
       // Delete from Cloudinary
-      await axios.delete('http://localhost:5000/api/upload', {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/upload`, {
         data: { public_id: `cloudscape/${publicId}` }
       });
 

@@ -18,7 +18,7 @@ const AdminProducts = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/products');
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -40,7 +40,7 @@ const AdminProducts = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/products/${id}`);
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
         fetchProducts(); // Refresh the list
       } catch (error) {
         console.error('Error deleting product:', error);
@@ -50,7 +50,7 @@ const AdminProducts = () => {
 
   const handleAddProduct = async (formData) => {
     try {
-      await axios.post('http://localhost:5000/api/products', formData);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/products`, formData);
       fetchProducts();
       setShowAddModal(false);
     } catch (error) {
@@ -60,7 +60,7 @@ const AdminProducts = () => {
 
   const handleUpdateProduct = async (formData) => {
     try {
-      await axios.put(`http://localhost:5000/api/products/${selectedProduct._id}`, formData);
+      await axios.put(`${import.meta.env.VITE_API_URL}/${selectedProduct._id}`, formData);
       fetchProducts();
       setShowEditModal(false);
       setSelectedProduct(null);

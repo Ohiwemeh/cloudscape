@@ -19,9 +19,8 @@ const AdminDashboard = () => {
 
         // Fetch products and user stats
         const [products, userStats] = await Promise.all([
-          axios.get('http://localhost:5000/api/products', config),
-          // 3. This is the corrected URL
-          axios.get('http://localhost:5000/api/admin/stats', config) 
+               axios.get(`${import.meta.env.VITE_API_URL}/api/products`, config),
+          axios.get(`${import.meta.env.VITE_API_URL}/api/admin/stats`, config),
         ]);
 
         setStats({

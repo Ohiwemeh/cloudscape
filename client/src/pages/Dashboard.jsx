@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronDown, ShoppingBag, User, Search } from 'lucide-react';
 
 const Dashboard = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
@@ -51,7 +53,11 @@ const Dashboard = () => {
                 <span className="absolute inset-0 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-sm tracking-widest font-medium z-20">SHOP NOW</span>
               </button>
               
-              <button className="group px-10 py-4 border border-white text-white hover:bg-white hover:text-black transition-all duration-500 hover:scale-105">
+              <button
+                onClick={() => navigate('/lookbook')}
+                aria-label="Open Lookbook"
+                className="group px-10 py-4 border border-white text-white hover:bg-white hover:text-black transition-all duration-500 hover:scale-105"
+              >
                 <span className="text-sm tracking-widest font-medium">LOOKBOOK</span>
               </button>
             </div>
