@@ -47,7 +47,7 @@ const Dashboard = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button className="group relative px-10 py-4 bg-white text-black overflow-hidden transition-all duration-500 hover:scale-105">
+              <button onClick={() => navigate('/products')} className="group relative px-10 py-4 bg-white text-black overflow-hidden transition-all duration-500 hover:scale-105">
                 <span className="relative z-10 text-sm tracking-widest font-medium">SHOP NOW</span>
                 <div className="absolute inset-0 bg-gray-900 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                 <span className="absolute inset-0 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-sm tracking-widest font-medium z-20">SHOP NOW</span>
