@@ -79,7 +79,7 @@ const ProductCard = ({ product }) => {
         </p>
         
         <p className="text-sm font-medium text-black">
-          ${product.price.toFixed(2)}
+          ₦{product.price.toFixed(2)}
         </p>
 
         {/* Size Selection */}

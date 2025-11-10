@@ -23,7 +23,7 @@ const Checkout = () => {
   const [serverError, setServerError] = useState('');
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = subtotal > 0 ? (subtotal > 100 ? 0 : 10) : 0;
+  const shipping = subtotal > 0 ? (subtotal > 50000 ? 0 : 1500) : 0;
   const total = subtotal + shipping;
 
   const handleInputChange = (e) => {
@@ -109,7 +109,7 @@ const Checkout = () => {
     public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
     tx_ref: Date.now().toString(),
     amount: total,
-    currency: 'USD',
+    currency: 'NGN',
     payment_options: 'card,banktransfer,ussd,account,opay',
     customer: {
       email: formData.email,
@@ -238,7 +238,7 @@ const Checkout = () => {
                 disabled={isProcessing}
                 className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors disabled:bg-gray-400"
               >
-                {isProcessing ? 'Processing...' : `Proceed to Payment - $${total.toFixed(2)}`}
+                {isProcessing ? 'Processing...' : `Proceed to Payment - ₦${total.toFixed(2)}`}
               </button>
             </form>
           </div>
@@ -254,7 +254,7 @@ const Checkout = () => {
                       {item.name} × {item.quantity}
                     </span>
                     <span className="font-medium">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ₦{(item.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
                 ))}
@@ -263,18 +263,18 @@ const Checkout = () => {
               <div className="border-t pt-4 space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium">₦{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Shipping</span>
                   <span className="font-medium">
-                    {shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}
+                    {shipping === 0 ? 'FREE' : `₦${shipping.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="border-t pt-2 mt-2">
                   <div className="flex justify-between">
                     <span className="font-medium tracking-wide">Total</span>
-                    <span className="font-medium text-lg">${total.toFixed(2)}</span>
+                    <span className="font-medium text-lg">₦{total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>

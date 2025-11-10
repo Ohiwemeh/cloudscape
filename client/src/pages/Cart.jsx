@@ -9,7 +9,7 @@ const Cart = () => {
   const [removingId, setRemovingId] = useState(null);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = subtotal > 0 ? (subtotal > 100 ? 0 : 10) : 0;
+  const shipping = subtotal > 0 ? (subtotal > 50000 ? 0 : 1500) : 0;
   const total = subtotal + shipping;
 
   const handleRemove = async (id) => {
@@ -123,11 +123,11 @@ const Cart = () => {
                       {/* Price */}
                       <div className="text-right">
                         <p className="text-sm font-medium">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ₦{(item.price * item.quantity).toFixed(2)}
                         </p>
                         {item.quantity > 1 && (
                           <p className="text-xs text-gray-500">
-                            ${item.price.toFixed(2)} each
+                            ₦{item.price.toFixed(2)} each
                           </p>
                         )}
                       </div>
@@ -164,23 +164,23 @@ const Cart = () => {
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Subtotal</span>
-                    <span className="font-medium">${subtotal.toFixed(2)}</span>
+                    <span className="font-medium">₦{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Shipping</span>
                     <span className="font-medium">
-                      {shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}
+                      {shipping === 0 ? 'FREE' : `₦${shipping.toFixed(2)}`}
                     </span>
                   </div>
-                  {subtotal > 0 && subtotal < 100 && (
+                  {subtotal > 0 && subtotal < 50000 && (
                     <p className="text-xs text-gray-500 italic">
-                      Free shipping on orders over $100
+                      Free shipping on orders over ₦50,000
                     </p>
                   )}
                   <div className="border-t border-gray-300 pt-4">
                     <div className="flex justify-between">
                       <span className="font-medium tracking-wide">Total</span>
-                      <span className="font-medium text-lg">${total.toFixed(2)}</span>
+                      <span className="font-medium text-lg">₦{total.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>

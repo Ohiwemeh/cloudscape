@@ -35,7 +35,7 @@ router.post('/initiate', protect, async (req, res) => {
     const payload = {
       tx_ref,
       amount,
-      currency: 'USD', // Change to your preferred currency (NGN, GHS, KES, etc.)
+      currency: 'NGN', // Nigerian Naira
       redirect_url: `${process.env.CLIENT_URL}/payment/callback`,
       payment_options: 'card,banktransfer,ussd,account,opay',
       customer: {
@@ -89,7 +89,7 @@ router.get('/verify/:transaction_id', protect, async (req, res) => {
     if (
       response.data.status === 'successful' &&
       response.data.amount >= response.data.meta.expectedAmount &&
-      response.data.currency === 'USD' // Change to match your currency
+      response.data.currency === 'NGN'
     ) {
       // Payment was successful
       // Update order status if orderId is available
