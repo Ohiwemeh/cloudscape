@@ -5,6 +5,12 @@ import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
+// Validate Flutterwave environment variables
+if (!process.env.FLW_PUBLIC_KEY || !process.env.FLW_SECRET_KEY) {
+  console.error('ERROR: Flutterwave credentials not configured!');
+  console.error('Please set FLW_PUBLIC_KEY and FLW_SECRET_KEY in your environment variables.');
+}
+
 // Initialize Flutterwave
 const flw = new Flutterwave(
   process.env.FLW_PUBLIC_KEY,
