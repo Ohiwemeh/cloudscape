@@ -55,7 +55,7 @@ Here's the full list of environment variables you need on Render:
 
 ```env
 # Database
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/cloudscape
+MONGO_URI=mo
 
 # Authentication
 JWT_SECRET=your_long_random_jwt_secret
