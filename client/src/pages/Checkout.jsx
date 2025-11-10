@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import axios from 'axios';
 import { ChevronLeft, AlertCircle } from 'lucide-react';
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Checkout = () => {
   const [currentStep, setCurrentStep] = useState('shipping');
   const [isProcessing, setIsProcessing] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [orderId, setOrderId] = useState(null);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = subtotal > 0 ? (subtotal > 100 ? 0 : 10) : 0;
@@ -73,8 +75,6 @@ const Checkout = () => {
 
   const handleSubmitPayment = async (e) => {
     e.preventDefault();
-    if (!validatePaymentForm()) return;
-
     setIsProcessing(true);
     setServerError('');
 
@@ -85,46 +85,101 @@ const Checkout = () => {
         return;
       }
 
-     // --- FIX 1: Sanitize the cart items to match the Order.js schema ---
- const sanitizedItems = cart.map(item => ({
-product: item._id, // Send only the product ID
- quantity: item.quantity,
-price: item.price,
-name: item.name,
-selectedSize: item.selectedSize || undefined // Handle optional size
-}));
+      // Create order first
+      const sanitizedItems = cart.map(item => ({
+        product: item._id,
+        quantity: item.quantity,
+        price: item.price,
+        name: item.name,
+        selectedSize: item.selectedSize || undefined
+      }));
 
-// --- FIX 2: Create shippingAddress object *without* email ---
-const shippingAddress = {
- firstName: formData.firstName,
- lastName: formData.lastName,
- // email: formData.email, // <-- REMOVED (Not in Order.js schema for shipping)
-phone: formData.phone,
-address: formData.address,
-city: formData.city,
-state: formData.state,
-zipCode: formData.zipCode
-};
+      const shippingAddress = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode
+      };
 
- const orderData = {
- items: sanitizedItems, // <-- Use the new sanitized array
- shippingAddress: shippingAddress,
- totalAmount: total,
-};
+      const orderData = {
+        items: sanitizedItems,
+        shippingAddress: shippingAddress,
+        totalAmount: total,
+      };
 
-await axios.post(
- `${import.meta.env.VITE_API_URL}/api/orders/create-order`,
- orderData,
- { headers: { Authorization: `Bearer ${token}` } }
-);
+      const orderResponse = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/orders/create-order`,
+        orderData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      clearCart();
-      navigate('/orders');
+      setOrderId(orderResponse.data._id);
+      
+      // Trigger Flutterwave payment
+      handleFlutterwavePayment(orderResponse.data._id);
+      
     } catch (err) {
       console.error('Order creation failed:', err);
-      setServerError(err.response?.data?.message || 'Failed to place order. Please try again.');
+      setServerError(err.response?.data?.message || 'Failed to create order. Please try again.');
       setIsProcessing(false);
     }
+  };
+
+  const config = {
+    public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
+    tx_ref: Date.now().toString(),
+    amount: total,
+    currency: 'USD',
+    payment_options: 'card,mobilemoney,ussd',
+    customer: {
+      email: formData.email,
+      phone_number: formData.phone,
+      name: `${formData.firstName} ${formData.lastName}`,
+    },
+    customizations: {
+      title: 'Cloudscape Fashion',
+      description: 'Payment for your order',
+      logo: 'https://your-logo-url.com/logo.png',
+    },
+  };
+
+  const handleFlutterPayment = useFlutterwave(config);
+
+  const handleFlutterwavePayment = (createdOrderId) => {
+    handleFlutterPayment({
+      callback: async (response) => {
+        console.log('Payment response:', response);
+        closePaymentModal();
+        
+        if (response.status === 'successful') {
+          try {
+            const token = localStorage.getItem('cloudscape_token');
+            // Verify payment on backend
+            await axios.get(
+              `${import.meta.env.VITE_API_URL}/api/payment/verify/${response.transaction_id}`,
+              { headers: { Authorization: `Bearer ${token}` } }
+            );
+            
+            clearCart();
+            navigate('/orders');
+          } catch (error) {
+            console.error('Payment verification failed:', error);
+            setServerError('Payment successful but verification failed. Please contact support.');
+            setIsProcessing(false);
+          }
+        } else {
+          setServerError('Payment was not successful. Please try again.');
+          setIsProcessing(false);
+        }
+      },
+      onClose: () => {
+        console.log('Payment modal closed');
+        setIsProcessing(false);
+      },
+    });
   };
 
   const renderInput = (label, name, type = 'text', colSpan = 'full') => (

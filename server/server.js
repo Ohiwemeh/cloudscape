@@ -8,6 +8,7 @@ import uploadroutes from "./routes/uploadRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.use("/api/upload", uploadroutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/payment", paymentRoutes);
 
 // Connect MongoDB (if not in test environment)
 if (process.env.NODE_ENV !== "test") {

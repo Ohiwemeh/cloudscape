@@ -48,6 +48,14 @@ const orderSchema = new mongoose.Schema({
     enum: ['pending', 'completed', 'failed'],
     default: 'pending'
   },
+  paymentReference: {
+    type: String,
+    sparse: true
+  },
+  flutterwaveRef: {
+    type: String,
+    sparse: true
+  },
   orderNumber: {
     type: String,
     unique: true

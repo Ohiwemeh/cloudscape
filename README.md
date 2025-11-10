@@ -19,6 +19,12 @@ JWT_SECRET=your_jwt_secret_here
 RESEND_API_KEY=your_resend_api_key_here
 FROM_EMAIL=no-reply@yourapp.com
 PORT=5000
+
+# Flutterwave Payment Gateway
+FLW_PUBLIC_KEY=your_flutterwave_public_key
+FLW_SECRET_KEY=your_flutterwave_secret_key
+FLW_SECRET_HASH=your_flutterwave_webhook_secret_hash
+CLIENT_URL=http://localhost:5173
 ```
 
 3. Seed the database with sample products:
@@ -41,7 +47,8 @@ npm install
 
 2. Create a `.env` file in the client directory:
 ```env
-VITE_API_BASE=http://localhost:5000/api
+VITE_API_URL=http://localhost:5000
+VITE_FLW_PUBLIC_KEY=your_flutterwave_public_key
 ```
 
 3. Start the development server:
@@ -78,7 +85,7 @@ npm run dev
 - 📧 Email notifications via Resend
 - 🛍️ Product catalog with size selection
 - 🛒 Shopping cart functionality
-- 💳 Checkout process (coming soon)
+- 💳 Flutterwave payment integration
 - 📱 Responsive design
 
 ## 🛠️ Tech Stack
@@ -88,6 +95,7 @@ npm run dev
 - **Database**: MongoDB with Mongoose
 - **Authentication**: JWT
 - **Email**: Resend
+- **Payment**: Flutterwave
 - **Deployment**: Vercel (frontend), Render (backend)
 
 ## 📝 Development Notes
