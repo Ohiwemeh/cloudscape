@@ -19,7 +19,6 @@ const Checkout = () => {
     zipCode: '',
   });
   const [errors, setErrors] = useState({});
-  const [currentStep, setCurrentStep] = useState('shipping');
   const [isProcessing, setIsProcessing] = useState(false);
   const [serverError, setServerError] = useState('');
 
@@ -50,15 +49,10 @@ const Checkout = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmitShipping = (e) => {
+  const handleSubmitShipping = async (e) => {
     e.preventDefault();
-    if (validateShippingForm()) {
-      setCurrentStep('payment');
-    }
-  };
-
-  const handleSubmitPayment = async (e) => {
-    e.preventDefault();
+    if (!validateShippingForm()) return;
+    
     setIsProcessing(true);
     setServerError('');
 
@@ -100,7 +94,7 @@ const Checkout = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Trigger Flutterwave payment
+      // Immediately trigger Flutterwave payment
       handleFlutterwavePayment(orderResponse.data._id);
       
     } catch (err) {
@@ -116,7 +110,7 @@ const Checkout = () => {
       tx_ref: `CLOUD-${Date.now()}-${orderId}`,
       amount: total,
       currency: 'USD',
-      payment_options: 'card,mobilemoney,ussd',
+      payment_options: 'card,banktransfer,ussd,account,opay',
       customer: {
         email: formData.email,
         phone_number: formData.phone,
@@ -183,70 +177,64 @@ const Checkout = () => {
       <div className="max-w-6xl mx-auto px-6">
         <div className="mb-12">
           <button
-            onClick={() => currentStep === 'shipping' ? navigate('/cart') : setCurrentStep('shipping')}
+            onClick={() => navigate('/cart')}
             className="flex items-center text-gray-600 hover:text-black transition-colors mb-6"
           >
             <ChevronLeft className="w-5 h-5 mr-1" />
-            {currentStep === 'shipping' ? 'Back to Cart' : 'Back to Shipping'}
+            Back to Cart
           </button>
           <h1 className="text-4xl md:text-5xl font-light tracking-wider mb-2">Checkout</h1>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2">
-            {currentStep === 'shipping' ? (
-              <form onSubmit={handleSubmitShipping} className="space-y-6">
-                <h2 className="text-xl font-light tracking-wider mb-6">Shipping Information</h2>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  {renderInput('First Name', 'firstName', 'text', 'half')}
-                  {renderInput('Last Name', 'lastName', 'text', 'half')}
+            <form onSubmit={handleSubmitShipping} className="space-y-6">
+              <h2 className="text-xl font-light tracking-wider mb-6">Shipping Information</h2>
+              
+              {serverError && (
+                <div className="bg-red-50 border border-red-200 text-red-700 p-4 flex items-start">
+                  <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>{serverError}</span>
                 </div>
+              )}
 
-                {renderInput('Email', 'email', 'email')}
-                {renderInput('Phone', 'phone', 'tel')}
-                {renderInput('Address', 'address')}
-                
-                <div className="grid grid-cols-2 gap-4">
-                  {renderInput('City', 'city', 'text', 'half')}
-                  {renderInput('State', 'state', 'text', 'half')}
-                </div>
+              <div className="grid grid-cols-2 gap-4">
+                {renderInput('First Name', 'firstName', 'text', 'half')}
+                {renderInput('Last Name', 'lastName', 'text', 'half')}
+              </div>
 
-                {renderInput('ZIP Code', 'zipCode')}
+              {renderInput('Email', 'email', 'email')}
+              {renderInput('Phone', 'phone', 'tel')}
+              {renderInput('Address', 'address')}
+              
+              <div className="grid grid-cols-2 gap-4">
+                {renderInput('City', 'city', 'text', 'half')}
+                {renderInput('State', 'state', 'text', 'half')}
+              </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors"
-                >
-                  Continue to Payment
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={handleSubmitPayment} className="space-y-6">
-                <h2 className="text-xl font-light tracking-wider mb-6">Payment Information</h2>
+              {renderInput('ZIP Code', 'zipCode')}
 
-                {serverError && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 p-4 flex items-start">
-                    <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>{serverError}</span>
-                  </div>
-                )}
+              <div className="bg-blue-50 border border-blue-200 p-4 rounded">
+                <p className="text-sm text-blue-800">
+                  <strong>Next:</strong> You'll be redirected to Flutterwave secure payment page where you can pay with:
+                </p>
+                <ul className="mt-2 text-sm text-blue-800 list-disc list-inside">
+                  <li>Debit/Credit Card</li>
+                  <li>Bank Transfer</li>
+                  <li>USSD</li>
+                  <li>Opay</li>
+                  <li>Bank Account</li>
+                </ul>
+              </div>
 
-                <div className="bg-blue-50 border border-blue-200 p-4">
-                  <p className="text-sm text-blue-800">
-                    Click "Pay with Flutterwave" to securely complete your payment using card, mobile money, or bank transfer.
-                  </p>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isProcessing}
-                  className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors disabled:bg-gray-400"
-                >
-                  {isProcessing ? 'Processing...' : `Pay with Flutterwave - $${total.toFixed(2)}`}
-                </button>
-              </form>
-            )}
+              <button
+                type="submit"
+                disabled={isProcessing}
+                className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors disabled:bg-gray-400"
+              >
+                {isProcessing ? 'Processing...' : `Proceed to Payment - $${total.toFixed(2)}`}
+              </button>
+            </form>
           </div>
 
           <div className="lg:col-span-1">

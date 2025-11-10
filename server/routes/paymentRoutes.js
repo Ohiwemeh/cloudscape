@@ -37,7 +37,7 @@ router.post('/initiate', protect, async (req, res) => {
       amount,
       currency: 'USD', // Change to your preferred currency (NGN, GHS, KES, etc.)
       redirect_url: `${process.env.CLIENT_URL}/payment/callback`,
-      payment_options: 'card,banktransfer,ussd',
+      payment_options: 'card,banktransfer,ussd,account,opay',
       customer: {
         email,
         phonenumber: phone || '',
