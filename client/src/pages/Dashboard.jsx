@@ -75,34 +75,46 @@ const Dashboard = () => {
 
       {/* Featured Section */}
       <div className="relative bg-white text-black py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-12">
-            <div className="group cursor-pointer">
-              <div className="overflow-hidden mb-6 bg-gray-100 aspect-[3/4]">
-                <div className="w-full h-full transform group-hover:scale-110 transition-transform duration-700 bg-gray-200"></div>
-              </div>
-              <h3 className="text-xl tracking-wider mb-2">ESSENTIALS</h3>
-              <p className="text-gray-600 text-sm">Curated basics for every wardrobe</p>
-            </div>
-            
-            <div className="group cursor-pointer">
-              <div className="overflow-hidden mb-6 bg-gray-100 aspect-[3/4]">
-                <div className="w-full h-full transform group-hover:scale-110 transition-transform duration-700 bg-gray-200"></div>
-              </div>
-              <h3 className="text-xl tracking-wider mb-2">STATEMENT PIECES</h3>
-              <p className="text-gray-600 text-sm">Bold designs that stand out</p>
-            </div>
-            
-            <div className="group cursor-pointer">
-              <div className="overflow-hidden mb-6 bg-gray-100 aspect-[3/4]">
-                <div className="w-full h-full transform group-hover:scale-110 transition-transform duration-700 bg-gray-200"></div>
-              </div>
-              <h3 className="text-xl tracking-wider mb-2">ACCESSORIES</h3>
-              <p className="text-gray-600 text-sm">Complete your look</p>
-            </div>
-          </div>
+  <div className="max-w-7xl mx-auto">
+    <div className="grid md:grid-cols-3 gap-12">
+      <div className="group cursor-pointer">
+        <div className="overflow-hidden mb-6 bg-gray-100 aspect-[3/4]">
+          <img 
+            src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80" 
+            alt="Essentials Collection"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+          />
         </div>
+        <h3 className="text-xl tracking-wider mb-2">ESSENTIALS</h3>
+        <p className="text-gray-600 text-sm">Curated basics for every wardrobe</p>
       </div>
+      
+      <div className="group cursor-pointer">
+        <div className="overflow-hidden mb-6 bg-gray-100 aspect-[3/4]">
+          <img 
+            src="https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800&q=80" 
+            alt="Statement Pieces"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+          />
+        </div>
+        <h3 className="text-xl tracking-wider mb-2">STATEMENT PIECES</h3>
+        <p className="text-gray-600 text-sm">Bold designs that stand out</p>
+      </div>
+      
+      <div className="group cursor-pointer">
+        <div className="overflow-hidden mb-6 bg-gray-100 aspect-[3/4]">
+          <img 
+            src="https://images.unsplash.com/photo-1506152983158-b4a74a01c721?w=800&q=80" 
+            alt="Accessories"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+          />
+        </div>
+        <h3 className="text-xl tracking-wider mb-2">ACCESSORIES</h3>
+        <p className="text-gray-600 text-sm">Complete your look</p>
+      </div>
+    </div>
+  </div>
+</div>
 
       {/* Newsletter Section */}
       <div className="relative bg-black py-24 px-6">
