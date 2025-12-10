@@ -90,7 +90,7 @@ const Products = () => {
             Our Collection
           </h1>
           <p className="text-gray-600 text-sm tracking-wide">
-            Discover timeless pieces crafted for elegance
+            Discover timeless pieces crafted for Cloudscape
           </p>
         </div>
 
