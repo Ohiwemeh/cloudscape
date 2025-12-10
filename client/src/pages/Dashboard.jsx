@@ -43,7 +43,7 @@ const Dashboard = () => {
               <span className="font-extralight italic">New Collection</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto font-light">
-              Timeless elegance meets contemporary design
+              CloudScape meets contemporary design
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -125,13 +125,13 @@ const Dashboard = () => {
       {/* Footer */}
       <footer className="relative bg-black border-t border-gray-900 py-12 px-6">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="text-2xl font-light tracking-[0.3em] mb-6">ÉLÉGANCE</div>
+          <div className="text-2xl font-light tracking-[0.3em] mb-6">CloudScape</div>
           <div className="flex justify-center space-x-8 text-sm text-gray-500 tracking-wider">
             <a href="#" className="hover:text-white transition-colors duration-300">CONTACT</a>
             <a href="#" className="hover:text-white transition-colors duration-300">CAREERS</a>
             <a href="#" className="hover:text-white transition-colors duration-300">PRIVACY</a>
           </div>
-          <p className="text-gray-600 text-xs mt-8 tracking-wider">© 2025 ÉLÉGANCE. ALL RIGHTS RESERVED.</p>
+          <p className="text-gray-600 text-xs mt-8 tracking-wider">© 2025 CLOUDSCAPE. ALL RIGHTS RESERVED.</p>
         </div>
       </footer>
     </div>
